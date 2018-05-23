@@ -12,20 +12,59 @@
     <script type="text/javascript" src="/webjars/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </head>
+
 <body ng-app="app" ng-controller="home as home">
-<h1>Demo</h1>
-<div class="container">
-    <p>ID: {{home.greeting.id}}</p>
-    <p>Message: {{home.greeting.msg}}</p>
-</div>
-<script type="text/javascript" src="/webjars/angularjs/1.4.3/angular.min.js"></script>
-<script type="text/javascript">
-    angular.module("app",[]).controller("home", function($http) {
-        var self = this;
-        $http.get("/greeting").then(function (response) {
-            self.greeting = response.data;
-        });
-    });
-</script>
+    <div class="container">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="active" ng-click="home.refresh()"><a href="">Home</a> </li>
+            <li><a href="">Login</a> </li>
+            <li><a href="" ng-click="home.logout()">Logout</a> </li>
+        </ul>
+        <form ng-submit="home.login()" ng-hide="home.hide">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="content1" name="content" ng-model="home.credentials.username"/>
+                <label for="username">Password:</label>
+                <input type="password" class="form-control" id="content2" name="content" ng-model="home.credentials.password"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div  class="container" ng-show="home.hide">
+            <p>ID: {{home.greeting.id}}</p>
+            <p>Message: {{home.greeting.msg}}</p>
+        </div>
+    </div>
+    <script type="text/javascript" src="/webjars/angularjs/1.4.3/angular.min.js"></script>
+    <script type="text/javascript">
+        angular.module("app",[])
+                .config(function($httpProvider) {
+                        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+                     }
+                ).controller("home", function($http) {
+                        var self = this;
+                        self.refresh = function() {
+                            $http.get("/greeting").then(function (response) {
+                                self.greeting = response.data;
+                            });
+                        };
+                        self.login = function() {
+                            $http.get('/greeting', {
+                                headers : { authorization : "Basic "
+                                    + btoa(self.credentials.username
+                                        + ":" + self.credentials.password)
+                                }}).then(function(response) {
+                                    self.greeting = response.data;
+                                    self.hide = true;
+                                })
+                        };
+                        self.logout = function () {
+                            $http.post("/logout").then(function(){
+                                self.hide = false;
+                                self.greeting = {};
+                            });
+                        }
+                });
+    </script>
+
 </body>
 </html>
