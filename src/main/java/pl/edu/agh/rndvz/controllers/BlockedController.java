@@ -22,26 +22,28 @@ public class BlockedController {
     @PostMapping(value = "/block", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity block(@RequestBody Relation rel) {
 
-
         Optional<User> startUserOptional = userRepository.findById(rel.getFrom());
         Optional<User> endUserOptional = userRepository.findById(rel.getTo());
 
-        try{
-            User startUser =startUserOptional.orElseThrow(IllegalArgumentException::new);
-            User endUser =endUserOptional.orElseThrow(IllegalArgumentException::new);
-            endUser.decreaseRate(startUser.getAvgRate());
-            blockUsers(startUser,endUser);
-            return new ResponseEntity<>(startUser,HttpStatus.OK);
+        try {
+            User startUser = startUserOptional.orElseThrow(IllegalArgumentException::new);
+            User endUser = endUserOptional.orElseThrow(IllegalArgumentException::new);
 
-        }catch (IllegalArgumentException ex){
+            endUser.decreaseRate(startUser.getAvgRate());
+
+            blockUsers(startUser, endUser);
+
+            return new ResponseEntity<>(startUser, HttpStatus.OK);
+
+        } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
         }
-
     }
 
     private void blockUsers(User startUser, User endUser) {
         startUser.getBlocked().add(endUser);
         endUser.getBlocked().add(startUser);
+
         userRepository.save(startUser);
         userRepository.save(endUser);
     }

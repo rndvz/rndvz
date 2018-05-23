@@ -19,17 +19,6 @@ public class AcceptedController {
     UserRepository userRepository;
 
 
-//    @RequestMapping(value = "/accepted")
-//    public User greeting() {
-//        User u1 = userRepository.findUserByFirstName("Teiiidst");
-//        User u2 = userRepository.findUserByFirstName("T");
-//
-//        u1.getAcceptedByMe().add(u2);
-//        userRepository.save(u1);
-//        return u1;
-//
-//    }
-
     @PostMapping(value = "/accept", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity accept(@RequestBody Relation rel) {
 
@@ -40,7 +29,9 @@ public class AcceptedController {
         try {
             User startUser = startUserOptional.orElseThrow(IllegalArgumentException::new);
             User endUser = endUserOptional.orElseThrow(IllegalArgumentException::new);
-            boolean isMatched =acceptUser(startUser, endUser);
+
+            boolean isMatched = acceptUser(startUser, endUser);
+
             return new ResponseEntity<>(isMatched, HttpStatus.OK);
 
         } catch (IllegalArgumentException ex) {
@@ -53,18 +44,19 @@ public class AcceptedController {
         boolean isMatched = false;
         if (startUser.isNotBlockedFor(endUser)) {
             startUser.getAcceptedByMe().add(endUser);
-            userRepository.save(startUser);
+
             endUser.increaseRate(startUser.getAvgRate());
-            userRepository.save(endUser);
+
             if (startUser.canMatchWith(endUser)) {
+
                 startUser.getMatched().add(endUser);
                 endUser.getMatched().add(startUser);
-                isMatched =true;
 
+                isMatched = true;
             }
+
             userRepository.save(endUser);
             userRepository.save(startUser);
-
         }
         return isMatched;
     }
