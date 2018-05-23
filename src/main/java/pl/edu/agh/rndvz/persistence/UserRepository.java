@@ -18,9 +18,9 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
             "OPTIONAL MATCH (p)<-[:blocked | matched | accepted]-(c: User) \n" +
             "where id(c) ={0}\n" +
             "WITH p, c \n" +
-            "WHERE c IS NULL \n" +
+            "WHERE c IS NULL and id(p) <> {0}\n" +
             "RETURN p LIMIT {1}")
-    List<User> getNextPossiblePairs(Long userID, Integer howMany);
+    List<User> getPossiblePairs(Long userID, Integer howMany);
 
     @Override
     Optional<User> findById(Long aLong);

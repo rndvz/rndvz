@@ -17,18 +17,11 @@ public class PairGeneratorController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping(value = "/users/{id}/next", method = RequestMethod.GET)
-    public ResponseEntity getNext(@PathVariable Long id) {
-        List<User> users = userRepository.getNextPossiblePairs(id, 2);
-        if (users.get(0).getId().equals(id)) {
-            if (users.size() == 2) {
-                return new ResponseEntity<>(users.get(1), HttpStatus.OK);
-            } else {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No more users to display");
-            }
-        }else return new ResponseEntity<>(users.get(0), HttpStatus.OK);
+    @RequestMapping(value = "/users/{id}/next/{howMany}", method = RequestMethod.GET)
+    public ResponseEntity getNext(@PathVariable Long id, @PathVariable Integer howMany) {
+        List<User> users = userRepository.getPossiblePairs(id, howMany);
 
-
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

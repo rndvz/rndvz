@@ -152,14 +152,14 @@ public class User {
     }
 
     public void increaseRate(double otherRate) {
-        if(otherRate > avgRate)
-            avgRate+= (otherRate-avgRate)/10;
-        else avgRate+= (otherRate-avgRate)/20;
+        if (otherRate > avgRate)
+            avgRate += (otherRate - avgRate) / 10;
+        else avgRate += (otherRate - avgRate) / 20;
     }
 
     public void decreaseRate(double otherRate) {
-        if(otherRate > avgRate)
-            avgRate-= (otherRate-avgRate)/10;
-        else avgRate-= (otherRate-avgRate)/20;
+        if (otherRate > avgRate)
+            avgRate -= (otherRate - avgRate) / 10;
+        else avgRate -= (otherRate - avgRate) / 20;
     }
 }
