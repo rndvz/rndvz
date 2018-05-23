@@ -3,7 +3,6 @@ package pl.edu.agh.rndvz.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
-import org.neo4j.ogm.annotation.Index;
 
 import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
@@ -33,7 +32,6 @@ public class User {
     @Relationship(type = "accepted", direction = INCOMING)
     private Set<User> acceptedMe = new HashSet<>();
 
-    @JsonIgnore
     @Relationship(type = "has_photo", direction = OUTGOING)
     private Set<Photo> photos = new HashSet<>();
 

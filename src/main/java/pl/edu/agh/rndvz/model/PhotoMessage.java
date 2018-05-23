@@ -1,24 +1,15 @@
 package pl.edu.agh.rndvz.model;
 
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-
-@NodeEntity
-public class Photo {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class PhotoMessage {
     private String name;
     private String photo;
 
 
-    public Photo() {
+    public PhotoMessage() {
     }
 
-    public Photo(String name,String photo) {
-        this.name =name;
+    public PhotoMessage(String photo) {
+
         this.photo = photo;
     }
 
@@ -30,11 +21,6 @@ public class Photo {
         this.name = name;
     }
 
-
-    public Long getId() {
-
-        return id;
-    }
 
     public String getPhoto() {
 
