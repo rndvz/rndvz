@@ -12,7 +12,6 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-    User findUserByFirstName(@Param("firstName") String firstName);
 
     @Query("MATCH (p: User) \n" +
             "OPTIONAL MATCH (p)<-[:blocked | matched | accepted]-(c: User) \n" +

@@ -3,10 +3,10 @@ package pl.edu.agh.rndvz.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.neo4j.ogm.annotation.Index;
 
 import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
-import static org.neo4j.ogm.annotation.Relationship.UNDIRECTED;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    private String firstName;
+    private String login;
 
     @DateString("yyyy-MM-dd")
     private Date birthDate;
@@ -50,8 +50,8 @@ public class User {
     }
 
 
-    public User(String firstName, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedVariation) {
-        this.firstName = firstName;
+    public User(String login, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedVariation) {
+        this.login = login;
         this.birthDate = birthDate;
         this.description = description;
         this.sex = sex;
@@ -81,14 +81,14 @@ public class User {
         return blocked;
     }
 
-    public String getFirstName() {
+    public String getLogin() {
 
 
-        return firstName;
+        return login;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Date getBirthDate() {
@@ -153,13 +153,13 @@ public class User {
 
     public void increaseRate(double otherRate) {
         if (otherRate > avgRate)
-            avgRate += (otherRate - avgRate) / 10;
-        else avgRate += (otherRate - avgRate) / 20;
+            avgRate += otherRate / 10;
+        else avgRate += otherRate / 20;
     }
 
     public void decreaseRate(double otherRate) {
         if (otherRate > avgRate)
-            avgRate -= (otherRate - avgRate) / 10;
-        else avgRate -= (otherRate - avgRate) / 20;
+            avgRate -= otherRate / 10;
+        else avgRate -= otherRate / 20;
     }
 }
