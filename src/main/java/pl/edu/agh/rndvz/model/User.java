@@ -34,6 +34,10 @@ public class User {
     private Set<User> acceptedMe = new HashSet<>();
 
     @JsonIgnore
+    @Relationship(type = "has_photo", direction = OUTGOING)
+    private Set<Photo> photos = new HashSet<>();
+
+    @JsonIgnore
     @Relationship(type = "accepted", direction = OUTGOING)
     private Set<User> acceptedByMe = new HashSet<>();
 
@@ -111,6 +115,14 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
     }
 
     public String getSexPreference() {
