@@ -6,7 +6,6 @@ import org.neo4j.ogm.annotation.typeconversion.DateString;
 
 import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
-import static org.neo4j.ogm.annotation.Relationship.UNDIRECTED;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -18,7 +17,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    private String firstName;
+    private String login;
 
     @DateString("yyyy-MM-dd")
     private Date birthDate;
@@ -33,16 +32,19 @@ public class User {
     @Relationship(type = "accepted", direction = INCOMING)
     private Set<User> acceptedMe = new HashSet<>();
 
+    @Relationship(type = "has_photo", direction = OUTGOING)
+    private Set<Photo> photos = new HashSet<>();
+
     @JsonIgnore
     @Relationship(type = "accepted", direction = OUTGOING)
     private Set<User> acceptedByMe = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "matched", direction = UNDIRECTED)
+    @Relationship(type = "matched", direction = OUTGOING)
     private Set<User> matched = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "blocked", direction = UNDIRECTED)
+    @Relationship(type = "blocked", direction = OUTGOING)
     private Set<User> blocked = new HashSet<>();
 
 
@@ -50,8 +52,8 @@ public class User {
     }
 
 
-    public User(String firstName, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedVariation) {
-        this.firstName = firstName;
+    public User(String login, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedVariation) {
+        this.login = login;
         this.birthDate = birthDate;
         this.description = description;
         this.sex = sex;
@@ -81,14 +83,12 @@ public class User {
         return blocked;
     }
 
-    public String getFirstName() {
-
-
-        return firstName;
+    public String getLogin() {
+        return login;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Date getBirthDate() {
@@ -113,6 +113,14 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
     }
 
     public String getSexPreference() {
@@ -149,5 +157,17 @@ public class User {
 
     public boolean canMatchWith(User endUser) {
         return acceptedMe.contains(endUser) && acceptedByMe.contains(endUser);
+    }
+
+    public void increaseRate(double otherRate) {
+        if (otherRate > avgRate)
+            avgRate += otherRate / 10;
+        else avgRate += otherRate / 20;
+    }
+
+    public void decreaseRate(double otherRate) {
+        if (otherRate > avgRate)
+            avgRate -= otherRate / 10;
+        else avgRate -= otherRate / 20;
     }
 }

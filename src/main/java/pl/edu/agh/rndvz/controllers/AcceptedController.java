@@ -19,17 +19,6 @@ public class AcceptedController {
     UserRepository userRepository;
 
 
-//    @RequestMapping(value = "/accepted")
-//    public User greeting() {
-//        User u1 = userRepository.findUserByFirstName("Teiiidst");
-//        User u2 = userRepository.findUserByFirstName("T");
-//
-//        u1.getAcceptedByMe().add(u2);
-//        userRepository.save(u1);
-//        return u1;
-//
-//    }
-
     @PostMapping(value = "/accept", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity accept(@RequestBody Relation rel) {
 
@@ -40,8 +29,10 @@ public class AcceptedController {
         try {
             User startUser = startUserOptional.orElseThrow(IllegalArgumentException::new);
             User endUser = endUserOptional.orElseThrow(IllegalArgumentException::new);
-            acceptUser(startUser, endUser);
-            return new ResponseEntity<>(startUser, HttpStatus.OK);
+
+            boolean isMatched = acceptUser(startUser, endUser);
+
+            return new ResponseEntity<>(isMatched, HttpStatus.OK);
 
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
@@ -49,15 +40,25 @@ public class AcceptedController {
 
     }
 
-    private void acceptUser(User startUser, User endUser) {
+    private boolean acceptUser(User startUser, User endUser) {
+        boolean isMatched = false;
         if (startUser.isNotBlockedFor(endUser)) {
             startUser.getAcceptedByMe().add(endUser);
+
+            endUser.increaseRate(startUser.getAvgRate());
+
             if (startUser.canMatchWith(endUser)) {
+
                 startUser.getMatched().add(endUser);
                 endUser.getMatched().add(startUser);
-                userRepository.save(endUser);
+
+                isMatched = true;
             }
+
+            userRepository.save(endUser);
             userRepository.save(startUser);
+
         }
+        return isMatched;
     }
 }
