@@ -52,11 +52,15 @@ public class AcceptedController {
     private void acceptUser(User startUser, User endUser) {
         if (startUser.isNotBlockedFor(endUser)) {
             startUser.getAcceptedByMe().add(endUser);
+            userRepository.save(startUser);
+            endUser.increaseRate(startUser.getAvgRate());
+            userRepository.save(endUser);
             if (startUser.canMatchWith(endUser)) {
                 startUser.getMatched().add(endUser);
                 endUser.getMatched().add(startUser);
-                userRepository.save(endUser);
+
             }
+            userRepository.save(endUser);
             userRepository.save(startUser);
         }
     }

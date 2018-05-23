@@ -29,6 +29,7 @@ public class BlockedController {
         try{
             User startUser =startUserOptional.orElseThrow(IllegalArgumentException::new);
             User endUser =endUserOptional.orElseThrow(IllegalArgumentException::new);
+            endUser.decreaseRate(startUser.getAvgRate());
             blockUsers(startUser,endUser);
             return new ResponseEntity<>(startUser,HttpStatus.OK);
 

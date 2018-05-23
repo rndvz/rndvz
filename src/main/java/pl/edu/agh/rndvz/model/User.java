@@ -38,11 +38,11 @@ public class User {
     private Set<User> acceptedByMe = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "matched", direction = UNDIRECTED)
+    @Relationship(type = "matched", direction = OUTGOING)
     private Set<User> matched = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "blocked", direction = UNDIRECTED)
+    @Relationship(type = "blocked", direction = OUTGOING)
     private Set<User> blocked = new HashSet<>();
 
 
@@ -149,5 +149,17 @@ public class User {
 
     public boolean canMatchWith(User endUser) {
         return acceptedMe.contains(endUser) && acceptedByMe.contains(endUser);
+    }
+
+    public void increaseRate(double otherRate) {
+        if(otherRate > avgRate)
+            avgRate+= (otherRate-avgRate)/10;
+        else avgRate+= (otherRate-avgRate)/20;
+    }
+
+    public void decreaseRate(double otherRate) {
+        if(otherRate > avgRate)
+            avgRate-= (otherRate-avgRate)/10;
+        else avgRate-= (otherRate-avgRate)/20;
     }
 }
