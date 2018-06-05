@@ -40,3 +40,17 @@ jobs:
       # run tests!
       - run: mvn integration-test
 
+deployment:
+  staging:
+    branch: master
+    codedeploy:
+      RndvzApp:
+        application_root: /target
+        region: us-east-2
+        revision_location:
+          revision_type: S3
+          s3_location:
+            bucket: rndvz-backend
+            key_pattern: RndvzApp-{BRANCH}-{SHORT_COMMIT}-{BUILD_NUM}
+        deployment_group: RndvzCodeDeploy
+        deployment_config: CodeDeployDefault.AllAtOnce
