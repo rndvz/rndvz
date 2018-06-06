@@ -11,7 +11,9 @@ cache:
 before_install:
   - chmod +x mvnw
 install:
-  - ./mvnw clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - ./mvnw clean install #-DskipTests=true -Dmaven.javadoc.skip=true -B -V
+before_script:
+  - ls target
 script:
   - bash <(curl -s https://codecov.io/bash)
 
