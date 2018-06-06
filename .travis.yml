@@ -1,0 +1,35 @@
+language: java
+jdk: oraclejdk8
+dist: trusty
+sudo: false
+
+cache:
+  directories:
+  - "$HOME/.m2"
+
+install: true
+script:
+  - ./mvnw clean install
+  - bash <(curl -s https://codecov.io/bash)
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    local_dir: target/codedeploy
+    skip_cleanup: true
+    bucket: rndvz-backend
+    region: us-east-2
+    on:
+      branch: master
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: rndvz-backend
+    key: rndvz-codedeploy.zip
+    bundle_type: zip
+    application: RndvzApp
+    deployment_group: RndvzCodeDeploy
+    region: us-east-2
+    on:
+      branch: master

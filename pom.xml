@@ -105,24 +105,41 @@
             </plugin>
 
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/codedeploy</outputDirectory>
+                    <descriptors>
+                        <descriptor>codedeploy/dep.xml</descriptor>
+                    </descriptors>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <id>create-archive</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>copy-resources</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>codedeploy</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
