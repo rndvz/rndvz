@@ -3,7 +3,6 @@ package pl.edu.agh.rndvz.persistence;
 import org.springframework.data.neo4j.annotation.Query;
 import pl.edu.agh.rndvz.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
@@ -13,13 +12,27 @@ import java.util.Optional;
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 
-    @Query("MATCH (p: User) \n" +
-            "OPTIONAL MATCH (p)<-[:blocked | matched | accepted]-(c: User) \n" +
-            "where id(c) ={0}\n" +
-            "WITH p, c \n" +
-            "WHERE c IS NULL and id(p) <> {0}\n" +
-            "RETURN p LIMIT {1}")
-    List<User> getPossiblePairs(Long userID, Integer howMany);
+    @Query("MATCH (p: User)\n" +
+            "OPTIONAL MATCH (p)<-[:blocked | :matched | :accepted]-(c: User)\n" +
+            "where id(c) = {0}\n" +
+            "WITH p, c\n" +
+            "WHERE c IS NULL and id(p) <> {0} \n" +
+            "\tand (p.avgRate - p.acceptedRateDifference) < {2}  and p.avgRate + p.acceptedRateDifference >{2}\n" +
+            "    and  {2}-{3} < p.avgRate and {2}+{3} > p.avgRate\n" +
+            "    and  (p.sexPreference ={4} or p.sexPreference = \"all\") \n" +
+            "    and  ({5} = p.sex or {5} = \"all\" )\n" +
+            "    and  date({6}) -duration(\"P\"+{7}+\"Y\")   < date(p.birthDate)\n" +
+            "    and  date({6}) + duration(\"P\"+{7}+\"Y\")  > date(p.birthDate)\n" +
+            "    RETURN p LIMIT {1}")
+    List<User> getPossiblePairs(Long userID,
+                                Integer howMany,
+                                Double avgRate,
+                                Integer acceptedRateDifference,
+                                String sex,
+                                String sexPreference,
+                                String birthDate,
+                                Integer acceptedYearDifference
+                                );
 
     @Override
     Optional<User> findById(Long aLong);

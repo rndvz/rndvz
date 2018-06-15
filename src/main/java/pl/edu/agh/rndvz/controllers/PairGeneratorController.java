@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class PairGeneratorController {
@@ -19,7 +22,25 @@ public class PairGeneratorController {
 
     @RequestMapping(value = "/users/{id}/next/{howMany}", method = RequestMethod.GET)
     public ResponseEntity getNext(@PathVariable Long id, @PathVariable Integer howMany) {
-        List<User> users = userRepository.getPossiblePairs(id, howMany);
+        Optional<User> optUser = userRepository.findById(id);
+        User user;
+        List<User> users;
+        if (optUser.isPresent()) {
+
+            user = optUser.get();
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+            String birthDate = dt.format(user.getBirthDate());
+            users = userRepository.getPossiblePairs(id,
+                    howMany,
+                    user.getAvgRate(),
+                    user.getAcceptedRateDifference(),
+                    user.getSex(),
+                    user.getSexPreference(),
+                    birthDate,
+                    user.getAcceptedYearDifference());
+        } else
+            users = new LinkedList<>();
+
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

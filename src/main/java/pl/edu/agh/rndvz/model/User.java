@@ -21,12 +21,19 @@ public class User {
 
     @DateString("yyyy-MM-dd")
     private Date birthDate;
+
     private String description;
     //    private coordinates
-    private String sex; // chenge on enum
-    private String sexPreference; // change on enum
+    private String sex;
+
+    private String sexPreference;
+
     private double avgRate;
-    private int acceptedVariation;
+
+    private int acceptedRateDifference;
+
+    private int acceptedYearDifference;
+
 
     @JsonIgnore
     @Relationship(type = "accepted", direction = INCOMING)
@@ -52,14 +59,15 @@ public class User {
     }
 
 
-    public User(String login, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedVariation) {
+    public User(String login, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedRateDifference, int acceptedYearDifference) {
         this.login = login;
         this.birthDate = birthDate;
         this.description = description;
         this.sex = sex;
         this.sexPreference = sexPreference;
         this.avgRate = avgRate;
-        this.acceptedVariation = acceptedVariation;
+        this.acceptedRateDifference = acceptedRateDifference;
+        this.acceptedYearDifference = acceptedYearDifference;
     }
 
     public Long getId() {
@@ -139,13 +147,22 @@ public class User {
         this.avgRate = avgRate;
     }
 
-    public int getAcceptedVariation() {
-        return acceptedVariation;
+    public int getAcceptedRateDifference() {
+        return acceptedRateDifference;
     }
 
-    public void setAcceptedVariation(int acceptedVariation) {
-        this.acceptedVariation = acceptedVariation;
+    public void setAcceptedRateDifference(int acceptedRateDifference) {
+        this.acceptedRateDifference = acceptedRateDifference;
     }
+
+    public int getAcceptedYearDifference() {
+        return acceptedYearDifference;
+    }
+
+    public void setAcceptedYearDifference(int acceptedYearDifference) {
+        this.acceptedYearDifference = acceptedYearDifference;
+    }
+
 
     public boolean isBlockedFor(User endUser) {
         return blocked.contains(endUser);
