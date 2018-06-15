@@ -17,8 +17,8 @@ public class Photo {
     public Photo() {
     }
 
-    public Photo(String name,String photo) {
-        this.name =name;
+    public Photo(String name, String photo) {
+        this.name = name;
         this.photo = photo;
     }
 

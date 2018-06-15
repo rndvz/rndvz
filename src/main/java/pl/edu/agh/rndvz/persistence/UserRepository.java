@@ -36,7 +36,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
                                 Double latitude,
                                 Double longitude,
                                 Integer distance
-                                );
+    );
 
     @Override
     Optional<User> findById(Long aLong);

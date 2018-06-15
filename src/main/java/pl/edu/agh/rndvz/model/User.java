@@ -44,25 +44,24 @@ public class User {
     @Relationship(type = "accepted", direction = INCOMING)
     private Set<User> acceptedMe = new HashSet<>();
 
-    @Relationship(type = "has_photo", direction = OUTGOING)
+    @Relationship(type = "has_photo")
     private Set<Photo> photos = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "accepted", direction = OUTGOING)
+    @Relationship(type = "accepted")
     private Set<User> acceptedByMe = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "matched", direction = OUTGOING)
+    @Relationship(type = "matched")
     private Set<User> matched = new HashSet<>();
 
     @JsonIgnore
-    @Relationship(type = "blocked", direction = OUTGOING)
+    @Relationship(type = "blocked")
     private Set<User> blocked = new HashSet<>();
 
 
     public User() {
     }
-
 
 
     public User(String login,
@@ -76,7 +75,7 @@ public class User {
                 int acceptedDistance,
                 double latitude,
                 double longitude
-                ) {
+    ) {
         this.login = login;
         this.birthDate = birthDate;
         this.description = description;
