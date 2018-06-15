@@ -37,7 +37,10 @@ public class PairGeneratorController {
                     user.getSex(),
                     user.getSexPreference(),
                     birthDate,
-                    user.getAcceptedYearDifference());
+                    user.getAcceptedYearDifference(),
+                    user.getLatitude(),
+                    user.getLongitude(),
+                    user.getAcceptedDistance());
         } else
             users = new LinkedList<>();
 

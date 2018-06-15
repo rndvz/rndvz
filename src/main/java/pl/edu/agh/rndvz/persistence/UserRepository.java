@@ -23,6 +23,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
             "    and  ({5} = p.sex or {5} = \"all\" )\n" +
             "    and  date({6}) -duration(\"P\"+{7}+\"Y\")   < date(p.birthDate)\n" +
             "    and  date({6}) + duration(\"P\"+{7}+\"Y\")  > date(p.birthDate)\n" +
+            "    and  sqrt((p.latitude -{8})^2 + (p.longitude -{9})^2) < {10}\n" +
             "    RETURN p LIMIT {1}")
     List<User> getPossiblePairs(Long userID,
                                 Integer howMany,
@@ -31,7 +32,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
                                 String sex,
                                 String sexPreference,
                                 String birthDate,
-                                Integer acceptedYearDifference
+                                Integer acceptedYearDifference,
+                                Double latitude,
+                                Double longitude,
+                                Integer distance
                                 );
 
     @Override

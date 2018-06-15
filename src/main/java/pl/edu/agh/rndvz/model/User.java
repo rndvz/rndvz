@@ -23,7 +23,7 @@ public class User {
     private Date birthDate;
 
     private String description;
-    //    private coordinates
+
     private String sex;
 
     private String sexPreference;
@@ -34,6 +34,11 @@ public class User {
 
     private int acceptedYearDifference;
 
+    private int acceptedDistance;
+
+    private double latitude;
+
+    private double longitude;
 
     @JsonIgnore
     @Relationship(type = "accepted", direction = INCOMING)
@@ -59,7 +64,19 @@ public class User {
     }
 
 
-    public User(String login, Date birthDate, String description, String sex, String sexPreference, double avgRate, int acceptedRateDifference, int acceptedYearDifference) {
+
+    public User(String login,
+                Date birthDate,
+                String description,
+                String sex,
+                String sexPreference,
+                double avgRate,
+                int acceptedRateDifference,
+                int acceptedYearDifference,
+                int acceptedDistance,
+                double latitude,
+                double longitude
+                ) {
         this.login = login;
         this.birthDate = birthDate;
         this.description = description;
@@ -68,6 +85,10 @@ public class User {
         this.avgRate = avgRate;
         this.acceptedRateDifference = acceptedRateDifference;
         this.acceptedYearDifference = acceptedYearDifference;
+        this.acceptedDistance = acceptedDistance;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
     }
 
     public Long getId() {
@@ -161,6 +182,31 @@ public class User {
 
     public void setAcceptedYearDifference(int acceptedYearDifference) {
         this.acceptedYearDifference = acceptedYearDifference;
+    }
+
+
+    public int getAcceptedDistance() {
+        return acceptedDistance;
+    }
+
+    public void setAcceptedDistance(int acceptedDistance) {
+        this.acceptedDistance = acceptedDistance;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
 
