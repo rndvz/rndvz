@@ -1,7 +1,9 @@
 package pl.edu.agh.rndvz.controllers;
 
+import pl.edu.agh.rndvz.model.Chat;
 import pl.edu.agh.rndvz.model.jsonMappings.Relation;
 import pl.edu.agh.rndvz.model.User;
+import pl.edu.agh.rndvz.persistence.ChatRepository;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AcceptedController {
 
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
     @Autowired
-    public AcceptedController(UserRepository userRepository) {
+    public AcceptedController(UserRepository userRepository, ChatRepository chatRepository) {
         this.userRepository = userRepository;
+        this.chatRepository = chatRepository;
     }
 
 
@@ -55,6 +59,12 @@ public class AcceptedController {
 
                 startUser.getMatched().add(endUser);
                 endUser.getMatched().add(startUser);
+
+                // since now users are can talk to each other
+                Chat chat = new Chat();
+                chat.addSpeaker(startUser);
+                chat.addSpeaker(endUser);
+                chatRepository.save(chat);
 
                 isMatched = true;
             }

@@ -9,10 +9,15 @@ import org.neo4j.ogm.annotation.Relationship;
 public class TextMessage {
     private static final String FOLLOWS = "follows";
     private static final String PRECEDS = "precedes";
+    private static final String SENDS = "sends";
+    private static final String RECEIVES = "receives";
+
 
     @Id
     @GeneratedValue
     private Long id;
+
+    private String text;
 
 
     @Relationship(type = FOLLOWS)
@@ -21,13 +26,31 @@ public class TextMessage {
     @Relationship(type = PRECEDS)
     private TextMessage nextMessage;
 
+    @Relationship(type = SENDS)
+    private User sender;
+
+    @Relationship(type = RECEIVES)
+    private User receiver;
+
     public TextMessage() {
     }
 
-    public TextMessage(TextMessage previousMessage, TextMessage nextMessage) {
+    public TextMessage(String text, TextMessage previousMessage, TextMessage nextMessage, User sender, User receiver) {
+        this.text = text;
         this.previousMessage = previousMessage;
         this.nextMessage = nextMessage;
+        this.sender = sender;
+        this.receiver = receiver;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
 
     public TextMessage getPreviousMessage() {
         return previousMessage;
@@ -43,6 +66,22 @@ public class TextMessage {
 
     public void setNextMessage(TextMessage nextMessage) {
         this.nextMessage = nextMessage;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public Long getId() {
