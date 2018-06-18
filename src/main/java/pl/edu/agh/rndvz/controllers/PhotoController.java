@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.rndvz.model.*;
+import pl.edu.agh.rndvz.model.jsonMappings.PhotoMessage;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
 

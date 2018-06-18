@@ -1,4 +1,4 @@
-package pl.edu.agh.rndvz.model;
+package pl.edu.agh.rndvz.model.jsonMappings;
 
 public class PhotoMessage {
     private String name;

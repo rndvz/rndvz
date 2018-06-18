@@ -1,6 +1,6 @@
 package pl.edu.agh.rndvz.controllers;
 
-import pl.edu.agh.rndvz.model.Relation;
+import pl.edu.agh.rndvz.model.jsonMappings.Relation;
 import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
