@@ -63,4 +63,12 @@ public class Chat {
     public void setLastMessage(TextMessage lastMessage) {
         this.lastMessage = lastMessage;
     }
+
+    public boolean hasLastMessage() {
+        return lastMessage != null;
+    }
+
+    public boolean hasNoMessages() {
+        return firstMessage == null;
+    }
 }

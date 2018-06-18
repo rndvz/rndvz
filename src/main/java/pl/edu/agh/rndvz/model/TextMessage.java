@@ -4,6 +4,7 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import pl.edu.agh.rndvz.model.jsonMappings.UserMessage;
 
 @NodeEntity
 public class TextMessage {
@@ -33,6 +34,10 @@ public class TextMessage {
     private User receiver;
 
     public TextMessage() {
+    }
+
+    public TextMessage(String text, TextMessage previousMessage, User sender, User receiver) {
+        this(text, previousMessage, null, sender, receiver);
     }
 
     public TextMessage(String text, TextMessage previousMessage, TextMessage nextMessage, User sender, User receiver) {
