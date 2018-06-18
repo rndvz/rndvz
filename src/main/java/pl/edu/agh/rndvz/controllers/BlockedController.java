@@ -16,8 +16,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 public class BlockedController {
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public BlockedController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @PostMapping(value = "/block", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity block(@RequestBody Relation rel) {

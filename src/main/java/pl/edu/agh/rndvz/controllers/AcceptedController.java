@@ -15,8 +15,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class AcceptedController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public AcceptedController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @PostMapping(value = "/accept", consumes = APPLICATION_JSON_VALUE)

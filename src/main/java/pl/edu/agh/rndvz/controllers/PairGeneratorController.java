@@ -17,8 +17,12 @@ import java.util.Optional;
 
 @RestController
 public class PairGeneratorController {
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public PairGeneratorController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(value = "/users/{id}/next/{howMany}", method = RequestMethod.GET)
     public ResponseEntity getNext(@PathVariable Long id, @PathVariable Integer howMany) {

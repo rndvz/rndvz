@@ -11,8 +11,12 @@ import pl.edu.agh.rndvz.persistence.UserRepository;
 
 @RestController
 public class PhotoController {
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public PhotoController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(value = "/users/{id}/upload", method = RequestMethod.POST)
     public @ResponseBody
