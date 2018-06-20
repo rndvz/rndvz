@@ -29,22 +29,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class ChatController {
 
-    private final UserRepository userRepository;
     private final ChatRepository chatRepository;
-    private final MessageRepository messageRepository;
 
     @Autowired
-    public ChatController(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository) {
-        this.userRepository = userRepository;
+    public ChatController(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
-        this.messageRepository = messageRepository;
     }
 
+
+    //get rid of messagestoreturn. change into relation. change messagecontroller?
     /**
-     *
      * @param message is derived from json like:
+     *                '{"messagesToReturn" : 3, "from":78, "to":54}'
      *
-     * @return
+     *
+     * @return Chat as json
      */
     @GetMapping(value = "/chats", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity getMessages(@RequestBody ChatMessage message) {

@@ -44,7 +44,7 @@ public class MessageController {
      *                '{  "text" : "hopsasa",
      *                "chatMessage": {"messagesToReturn" : 3,"from":78,"to":54} }'
      * @return ResponseEnity with list of TextMessages as json. Messages are sorted.
-     *                First message in list is the oldest, last message in list is the newest.
+     * First message in list is the oldest, last message in list is the newest.
      */
     @PostMapping(value = "/messages", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity newMessage(@RequestBody UserMessage message) {
@@ -109,7 +109,6 @@ public class MessageController {
         chatRepository.save(chat);
 
     }
-
 
 
 }
