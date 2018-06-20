@@ -1,5 +1,6 @@
 package pl.edu.agh.rndvz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -20,13 +21,15 @@ public class TextMessage {
 
     private String text;
 
-
+    @JsonIgnore
     @Relationship(type = FOLLOWS)
     private TextMessage previousMessage;
 
+    @JsonIgnore
     @Relationship(type = PRECEDS)
     private TextMessage nextMessage;
 
+    //just login?
     @Relationship(type = SENDS)
     private User sender;
 
