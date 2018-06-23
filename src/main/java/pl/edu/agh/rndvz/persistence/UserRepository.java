@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 

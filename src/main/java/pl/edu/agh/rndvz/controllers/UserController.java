@@ -8,7 +8,7 @@ import pl.edu.agh.rndvz.persistence.UserRepository;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 public class UserController {
 
@@ -40,7 +40,7 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "users/loginExists/{login}")
+    @GetMapping(value = "/users/loginExists/{login}")
     ResponseEntity exists(@PathVariable String login) {
         Optional<User> user = userRepository.findUserByLogin(login);
 

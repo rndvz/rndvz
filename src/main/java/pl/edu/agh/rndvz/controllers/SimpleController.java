@@ -13,7 +13,7 @@ public class SimpleController {
     @Autowired
     public SimpleController(){ }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public @ResponseBody
     String accept() {

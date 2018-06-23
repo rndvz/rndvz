@@ -21,7 +21,7 @@ public class PairGeneratorController {
         this.userRepository = userRepository;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/users/{id}/next/{howMany}", method = RequestMethod.GET)
     public ResponseEntity getNext(@PathVariable Long id, @PathVariable Integer howMany) {
         Optional<User> optUser = userRepository.findById(id);
