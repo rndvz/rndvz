@@ -1,6 +1,8 @@
 package pl.edu.agh.rndvz.persistence;
 
+import org.glassfish.jersey.internal.inject.Custom;
 import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import pl.edu.agh.rndvz.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -8,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
@@ -40,6 +43,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     @Override
     Optional<User> findById(Long aLong);
+
+
+    Optional<User> findUserByLogin(String login);
+
 
 
 }
