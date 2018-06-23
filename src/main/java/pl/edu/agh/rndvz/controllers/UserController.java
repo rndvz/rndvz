@@ -25,7 +25,8 @@ public class UserController {
     ResponseEntity findByLogin(@PathVariable String login) {
         Optional<User> user = userRepository.findUserByLogin(login);
 
-        return user.map(Utils::wrapWithResponseEntity)
+        return user
+                .map(Utils::wrapWithResponseEntity)
                 .orElseGet(Utils::noUserFoundforGivenLogin);
     }
 
@@ -34,7 +35,9 @@ public class UserController {
     ResponseEntity getIDbyLogin(@PathVariable String login) {
         Optional<User> user = userRepository.findUserByLogin(login);
 
-        return user.map(User::getId)
+        return user
+                .map(User::getId)
+                .map(Utils::toJson)
                 .map(Utils::wrapWithResponseEntity)
                 .orElseGet(Utils::noUserFoundforGivenLogin);
     }
@@ -45,8 +48,8 @@ public class UserController {
         Optional<User> user = userRepository.findUserByLogin(login);
 
         return user
-                .map(u -> ResponseEntity.ok(true))
-                .orElse(ResponseEntity.ok(false));
+                .map(u -> ResponseEntity.ok(Utils.toJson(true)))
+                .orElse(ResponseEntity.ok(Utils.toJson(false)));
     }
 
     @GetMapping(value = "/exists/{ID}")
@@ -54,8 +57,8 @@ public class UserController {
         Optional<User> user = userRepository.findById(ID);
 
         return user
-                .map(u -> ResponseEntity.ok(true))
-                .orElse(ResponseEntity.ok(false));
+                .map(u -> ResponseEntity.ok(Utils.toJson(true)))
+                .orElse(ResponseEntity.ok(Utils.toJson(false)));
     }
 
 

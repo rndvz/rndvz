@@ -1,7 +1,6 @@
 package pl.edu.agh.rndvz;
 
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,10 +28,10 @@ public class RestTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Before
-    public void deleteAllBeforeTests() throws Exception {
-        userRepository.deleteAll();
-    }
+//    @Before
+//    public void deleteAllBeforeTests() throws Exception {
+//        userRepository.deleteAll();
+//    }
 
     @Test
     public void shouldReturnRepositoryIndex() throws Exception {

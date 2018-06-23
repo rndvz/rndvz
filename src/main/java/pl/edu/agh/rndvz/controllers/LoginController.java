@@ -32,8 +32,8 @@ public class LoginController {
 
     private ResponseEntity toAuthenticationResponse(User user, Credentials credentials) {
         if (user.getPassword().equals(credentials.getPassword()))
-            return ResponseEntity.ok(true);
-        else return ResponseEntity.ok(false);
+            return ResponseEntity.ok(Utils.toJson(true));
+        else return ResponseEntity.ok(Utils.toJson(false));
 
 
     }
