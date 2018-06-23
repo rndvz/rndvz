@@ -5,7 +5,6 @@ import org.neo4j.ogm.annotation.*;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
 
 import static org.neo4j.ogm.annotation.Relationship.INCOMING;
-import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -18,6 +17,8 @@ public class User {
     private Long id;
 
     private String login;
+
+    private String password;
 
     @DateString("yyyy-MM-dd")
     private Date birthDate;
@@ -64,36 +65,19 @@ public class User {
     }
 
 
-    public User(String login,
-                Date birthDate,
-                String description,
-                String sex,
-                String sexPreference,
-                double avgRate,
-                int acceptedRateDifference,
-                int acceptedYearDifference,
-                int acceptedDistance,
-                double latitude,
-                double longitude
-    ) {
-        this.login = login;
-        this.birthDate = birthDate;
-        this.description = description;
-        this.sex = sex;
-        this.sexPreference = sexPreference;
-        this.avgRate = avgRate;
-        this.acceptedRateDifference = acceptedRateDifference;
-        this.acceptedYearDifference = acceptedYearDifference;
-        this.acceptedDistance = acceptedDistance;
-        this.latitude = latitude;
-        this.longitude = longitude;
-
-    }
-
     public Long getId() {
 
         return id;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public Set<User> getAcceptedMe() {
         return acceptedMe;
