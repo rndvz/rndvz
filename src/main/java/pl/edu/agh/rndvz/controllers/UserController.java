@@ -40,7 +40,7 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/exists/{login}")
+    @GetMapping(value = "users/loginExists/{login}")
     ResponseEntity exists(@PathVariable String login) {
         Optional<User> user = userRepository.findUserByLogin(login);
 
