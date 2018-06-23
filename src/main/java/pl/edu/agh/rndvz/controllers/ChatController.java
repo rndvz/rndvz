@@ -42,7 +42,7 @@ public class ChatController {
      *
      * @return Chat as json
      */
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/chats", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity getMessages(@RequestBody ChatMessage message) {
         Optional<Chat> optionalChat = chatRepository.findByUsers(message.getFrom(), message.getTo());

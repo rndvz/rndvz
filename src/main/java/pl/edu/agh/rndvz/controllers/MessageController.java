@@ -55,7 +55,7 @@ public class MessageController {
      * @return ResponseEnity with list of TextMessages as json. Messages are sorted.
      * First message in list is the oldest, last message in list is the newest.
      */
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/messages", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity newMessage(@RequestBody UserMessage message) {
 

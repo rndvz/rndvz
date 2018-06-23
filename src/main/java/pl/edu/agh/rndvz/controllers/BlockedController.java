@@ -24,7 +24,7 @@ public class BlockedController {
         this.userRepository = userRepository;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/block", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity block(@RequestBody Relation rel) {
 
