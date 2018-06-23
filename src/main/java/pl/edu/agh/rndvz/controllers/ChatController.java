@@ -5,10 +5,7 @@ import org.neo4j.driver.v1.types.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.rndvz.model.Chat;
 import pl.edu.agh.rndvz.model.TextMessage;
 import pl.edu.agh.rndvz.model.User;
@@ -45,6 +42,7 @@ public class ChatController {
      *
      * @return Chat as json
      */
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/chats", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity getMessages(@RequestBody ChatMessage message) {
         Optional<Chat> optionalChat = chatRepository.findByUsers(message.getFrom(), message.getTo());

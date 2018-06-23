@@ -1,5 +1,6 @@
 package pl.edu.agh.rndvz.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import pl.edu.agh.rndvz.model.jsonMappings.Relation;
 import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.UserRepository;
@@ -23,6 +24,7 @@ public class BlockedController {
         this.userRepository = userRepository;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/block", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity block(@RequestBody Relation rel) {
 

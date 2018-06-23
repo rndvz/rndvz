@@ -18,6 +18,7 @@ public class PhotoController {
         this.userRepository = userRepository;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/users/{id}/upload", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity getFile(@PathVariable Long id, @RequestBody PhotoMessage photoMessage) {

@@ -5,6 +5,7 @@ import org.neo4j.driver.v1.types.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,7 @@ public class MessageController {
      * @return ResponseEnity with list of TextMessages as json. Messages are sorted.
      * First message in list is the oldest, last message in list is the newest.
      */
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/messages", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity newMessage(@RequestBody UserMessage message) {
 

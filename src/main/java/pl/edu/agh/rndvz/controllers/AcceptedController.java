@@ -27,6 +27,7 @@ public class AcceptedController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/accept", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity accept(@RequestBody Relation rel) {
 
