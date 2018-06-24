@@ -36,6 +36,12 @@ public class MessageController {
         this.messageRepository = messageRepository;
     }
 
+    /**
+     * @param messageID id of the last message.
+     *                  That means, that this message and the earlier ones will be returned.
+     * @return MessageList Object as JSON. Messages are sorted.
+     * First message in list is the oldest, last message in list is the newest.
+     */
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/messages/{messageID}")
     public ResponseEntity getMessageFrom(@PathVariable Long messageID) {
@@ -48,7 +54,7 @@ public class MessageController {
      * @param message is derived from json like
      *                '{  "text" : "hopsasa",
      *                "from":78,"to":54} }'
-     * @return ResponseEnity with list of TextMessages as json. Messages are sorted.
+     * @return MessageList object as JSON. Messages are sorted.
      * First message in list is the oldest, last message in list is the newest.
      */
     @CrossOrigin(origins = "*")
