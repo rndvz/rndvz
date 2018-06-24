@@ -27,7 +27,6 @@ public class ChatController {
      * @param relation is derived from json like:
      *                '{ "from":78, "to":54}'
      *
-     *
      * @return Chat object as json
      */
     @CrossOrigin(origins = "*")

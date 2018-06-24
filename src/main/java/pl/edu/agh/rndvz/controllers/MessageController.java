@@ -92,7 +92,7 @@ public class MessageController {
                         .map(Optional::get)  // these IDs are in path returned by neo4j -> the must exist
                         .collect(Collectors.toList());
 
-        return ResponseEntity.ok(textMessages);
+        return ResponseEntity.ok(Utils.toJson(textMessages));
     }
 
 
