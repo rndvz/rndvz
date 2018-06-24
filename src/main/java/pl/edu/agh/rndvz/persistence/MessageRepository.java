@@ -10,7 +10,7 @@ import java.util.Map;
 public interface MessageRepository extends PagingAndSortingRepository<TextMessage, Long> {
     int MESSAGES = 10;
 
-    @Query("match p =(n:TextMessage)-[:precedes*" + MESSAGES + ".." + MESSAGES + "3]->(m:TextMessage)\n" +
+    @Query("match p =(n:TextMessage)-[:precedes*0.." + MESSAGES + "]->(m:TextMessage)\n" +
             "where id(m) ={0}\n" +
             "RETURN p")
     Iterable<Map<String, InternalPath>> getLastMessages(Long lastMessageId);

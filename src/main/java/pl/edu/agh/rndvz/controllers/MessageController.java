@@ -1,15 +1,11 @@
 package pl.edu.agh.rndvz.controllers;
 
+import org.glassfish.jersey.internal.guava.Lists;
 import org.neo4j.driver.internal.InternalPath;
 import org.neo4j.driver.v1.types.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.rndvz.model.Chat;
 import pl.edu.agh.rndvz.model.TextMessage;
 import pl.edu.agh.rndvz.model.User;
@@ -18,11 +14,11 @@ import pl.edu.agh.rndvz.persistence.ChatRepository;
 import pl.edu.agh.rndvz.persistence.MessageRepository;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -40,8 +36,8 @@ public class MessageController {
         this.messageRepository = messageRepository;
     }
 
-
-    @PostMapping(value = "/messages/{messageID}", consumes = APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/messages/{messageID}")
     public ResponseEntity getMessageFrom(@PathVariable Long messageID) {
 
         return toMessageListResponse(messageID);
@@ -51,7 +47,7 @@ public class MessageController {
     /**
      * @param message is derived from json like
      *                '{  "text" : "hopsasa",
-     *                "chatMessage": {"messagesToReturn" : 3,"from":78,"to":54} }'
+     *                "from":78,"to":54} }'
      * @return ResponseEnity with list of TextMessages as json. Messages are sorted.
      * First message in list is the oldest, last message in list is the newest.
      */
@@ -71,24 +67,32 @@ public class MessageController {
 
     private ResponseEntity toMessageListResponse(Long startMessageID) {
         Iterable<Map<String, InternalPath>> paths = messageRepository.getLastMessages(startMessageID);
+        long maxSize = 0;
+        List<Entity> longestPath = new LinkedList<>();
 
-        // actually it should contain just 1 result
         for (Map<String, InternalPath> m : paths) {
+
             // query is like "match p=..."
             InternalPath internalPath = m.get("p");
 
-            List<TextMessage> textMessages = StreamSupport.stream(internalPath.nodes().spliterator(), false)
-                    .map(Entity::id)
-                    .map(messageRepository::findById)
-                    .map(Optional::get)  // these IDs are in path returned by neo4j -> the must exist
-                    .collect(Collectors.toList());
+            List<Entity> currentEntities = Lists.newArrayList(internalPath.nodes());
+            long currentSize = currentEntities.size();
 
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(textMessages);
+            if (currentSize >= maxSize) {
+                maxSize = currentSize;
+                longestPath = currentEntities;
+            }
         }
 
-        return Utils.noPathFound();
+        List<TextMessage> textMessages =
+                longestPath
+                        .stream()
+                        .map(Entity::id)
+                        .map(messageRepository::findById)
+                        .map(Optional::get)  // these IDs are in path returned by neo4j -> the must exist
+                        .collect(Collectors.toList());
+
+        return ResponseEntity.ok(textMessages);
     }
 
 

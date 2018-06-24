@@ -2,15 +2,12 @@ package pl.edu.agh.rndvz.model.jsonMappings;
 
 public class UserMessage {
     private String text;
-    private ChatMessage chatMessage;
+    private Long from;
+    private Long to;
 
     public UserMessage() {
     }
 
-    public UserMessage(String text, ChatMessage chatMessage) {
-        this.text = text;
-        this.chatMessage = chatMessage;
-    }
 
     public String getText() {
         return text;
@@ -20,25 +17,20 @@ public class UserMessage {
         this.text = text;
     }
 
-    public ChatMessage getChatMessage() {
-        return chatMessage;
-    }
-
-    public void setChatMessage(ChatMessage chatMessage) {
-        this.chatMessage = chatMessage;
-    }
-
     public Long getFrom() {
-        return chatMessage.getFrom();
+        return from;
     }
 
+    public void setFrom(Long from) {
+        this.from = from;
+    }
 
     public Long getTo() {
-        return chatMessage.getTo();
+        return to;
     }
 
-    public int getMessagesToReturn() {
-        return chatMessage.getMessagesToReturn();
+    public void setTo(Long to) {
+        this.to = to;
     }
 
 }
