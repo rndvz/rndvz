@@ -1,6 +1,7 @@
 package pl.edu.agh.rndvz;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import pl.edu.agh.rndvz.model.User;
+import pl.edu.agh.rndvz.model.jsonMappings.JsonID;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
 import static org.hamcrest.Matchers.*;
@@ -30,7 +33,7 @@ public class RestTests {
     private UserRepository userRepository;
 
     @Before
-    public void deleteAllBeforeTests(){
+    public void deleteAllBeforeTests() {
         userRepository.deleteAll();
     }
 
@@ -62,37 +65,6 @@ public class RestTests {
                 jsonPath("$.login").value("Frodo"));
     }
 
-//    @Test
-//    public void shouldQueryEntity() throws Exception {
-//
-//        mockMvc.perform(post("/people").content(
-//                "{\"login\": \"Frodo\"}")).andExpect(
-//                status().isCreated());
-//
-//        mockMvc.perform(
-//                get("/people/search/findByLastName?name={name}", "Baggins")).andExpect(
-//                status().isOk()).andExpect(
-//                jsonPath("$._embedded.people[0].firstName").value(
-//                        "Frodo"));
-//    }
-
-//    @Test
-//    public void shouldUpdateEntity() throws Exception {
-//
-//        MvcResult mvcResult = mockMvc.perform(post("/users").content(
-//                "{\"login\": \"Frodo\"}")).andExpect(
-//                status().isCreated()).andReturn();
-//
-//        String location = mvcResult.getResponse().getHeader("Location");
-//
-//        mockMvc.perform(put(location).content(
-//                "{\"login\": \"Bilbo\"}")).andExpect(
-//                status().isNoContent());
-//
-//        mockMvc.perform(get(location)).andExpect(status().isOk()).andExpect(
-//                jsonPath("$.login").value("Bilbo"));
-//    }
-
     @Test
     public void shouldPartiallyUpdateEntity() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/users").content(
@@ -109,6 +81,7 @@ public class RestTests {
                 jsonPath("$.login").value("Bilbo"));
     }
 
+
     @Test
     public void shouldDeleteEntity() throws Exception {
 
@@ -121,4 +94,88 @@ public class RestTests {
 
         mockMvc.perform(get(location)).andExpect(status().isNotFound());
     }
+
+
+    @Test
+    public void shouldReturnUserWhenGivenLogin() throws Exception {
+        mockMvc.perform(post("/users").content(
+                "{\"login\": \"Frodo\"}")).andExpect(
+                status().isCreated());
+
+        mockMvc.perform(get("/users/search/findByLogin/Frodo")).andExpect(
+                status().isOk()).andExpect(jsonPath("$.login").value("Frodo"));
+
+    }
+
+    @Test
+    public void shouldReturnIDWhenGivenLogin() throws Exception {
+        mockMvc.perform(post("/users").content(
+                "{\"login\": \"Frodo\"}")).andExpect(
+                status().isCreated()).andReturn();
+
+        MvcResult mvcResult = mockMvc.perform(get("/users/search/findByLogin/Frodo")).andExpect(
+                status().isOk()).andReturn();
+
+        String jsonString = mvcResult.getResponse().getContentAsString();
+        System.out.println(jsonString);
+        ObjectMapper mapper = new ObjectMapper();
+
+        User user = mapper.readValue(jsonString, User.class);
+
+        mockMvc.perform(get("/users/search/getIDbyLogin/Frodo")).andExpect(
+                status().isOk()).andExpect(jsonPath("$.id").value(user.getId()));
+
+    }
+
+    @Test
+    public void shouldtrueIfLoginExists() throws Exception {
+        mockMvc.perform(post("/users").content(
+                "{\"login\": \"Frodo\"}")).andExpect(
+                status().isCreated()).andReturn();
+
+        mockMvc.perform(get("/users/loginExists/Frodo")).andExpect(
+                status().isOk()).andExpect(jsonPath("$.value").value(true));
+
+    }
+
+
+    @Test
+    public void shouldReturnTrueIfIdExists() throws Exception {
+        mockMvc.perform(post("/users").content(
+                "{\"login\": \"Frodo\"}")).andExpect(
+                status().isCreated()).andReturn();
+
+        MvcResult mvcResult = mockMvc.perform(get("/users/search/findByLogin/Frodo")).andExpect(
+                status().isOk()).andReturn();
+
+        String jsonString = mvcResult.getResponse().getContentAsString();
+        System.out.println(jsonString);
+        ObjectMapper mapper = new ObjectMapper();
+
+        User user = mapper.readValue(jsonString, User.class);
+
+        mockMvc.perform(get("/exists/{ID}", user.getId())).andExpect(
+                status().isOk()).andExpect(jsonPath("$.value").value(true));
+
+    }
+
+
+    @Test
+    public void shouldReturnFalseIfLoginNotExist() throws Exception {
+
+        mockMvc.perform(get("/users/loginExists/asjdhfaoieurhe")).andExpect(
+                status().isOk()).andExpect(jsonPath("$.value").value(false));
+
+    }
+
+
+    @Test
+    public void shouldReturnFalseIfIdNotExist() throws Exception {
+
+        mockMvc.perform(get("/exists/{ID}", 12341232)).andExpect(
+                status().isOk()).andExpect(jsonPath("$.value").value(false));
+
+    }
+
+
 }
