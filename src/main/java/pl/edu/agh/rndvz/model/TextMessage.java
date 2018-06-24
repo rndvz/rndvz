@@ -96,7 +96,4 @@ public class TextMessage {
         return id;
     }
 
-    // tworzenie chatu jak jest match
-    // get n wiadomości
-    // dodaj wiadomość -od do tekst
 }

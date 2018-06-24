@@ -41,10 +41,10 @@ public class AcceptedController {
 
             boolean isMatched = acceptUser(startUser, endUser);
 
-            return new ResponseEntity<>(isMatched, HttpStatus.OK);
+            return ResponseEntity.ok(Utils.toJson(isMatched));
 
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
+            return ResponseEntity.badRequest().body("No user with given id");
         }
 
     }

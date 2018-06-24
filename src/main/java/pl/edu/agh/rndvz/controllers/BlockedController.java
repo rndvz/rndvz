@@ -39,7 +39,7 @@ public class BlockedController {
 
             blockUsers(startUser, endUser);
 
-            return new ResponseEntity<>(startUser, HttpStatus.OK);
+            return ResponseEntity.ok(startUser);
 
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
