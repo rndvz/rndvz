@@ -23,4 +23,16 @@ public class PhotoTest extends AbstractTest {
                         status().isOk())
                 .andExpect(jsonPath("$.message").value("uploaded"));
     }
+
+    @Test
+    public void shouldReturnErrorIfUserNotExist() throws Exception {
+        String content = "{\"name\":\"lalala\",\"photo\":\"photo1\"}";
+
+        mockMvc.perform(post("/users/{id}/upload", 1234567)
+                .header("Content-Type", "application/json")
+                .content(content))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No user with given id"));
+    }
 }

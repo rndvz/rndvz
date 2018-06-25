@@ -19,9 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PairGeneratorTests extends AbstractTest{
+public class PairGeneratorTests extends AbstractTest {
     protected static String USER3 = "l3";
     protected static String PASSWORD3 = "p3";
+
     @Before
     public void initialize() throws Exception {
         super.initialize();
@@ -47,11 +48,20 @@ public class PairGeneratorTests extends AbstractTest{
     public void shouldReturnOneIgnoreOne() throws Exception {
         User user3 = userRepository.findUserByLogin(USER3).get();
 
-        mockMvc.perform(get("/users/{id}/next/{howMany}",user3.getId(),4))
+        mockMvc.perform(get("/users/{id}/next/{howMany}", user3.getId(), 4))
                 .andExpect(
                         status().isOk())
                 .andExpect(jsonPath("$.users").isArray())
                 .andExpect(jsonPath("$.users", hasSize(1)));
+    }
+
+    @Test
+    public void shouldReturnErrorIfIdNotExist() throws Exception {
+
+        mockMvc.perform(get("/users/{id}/next/{howMany}", 123422, 4))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No user with given id"));
     }
 
 

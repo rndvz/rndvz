@@ -21,7 +21,7 @@ public class LoginTest extends AbstractTest {
     @Test
     public void shouldReturnTrueOnGoodCredentials() throws Exception {
 
-        String content1 = "{\"login\":\""+USER1+"\",\"password\":\"" + PASSWORD1+ "\"}";
+        String content1 = "{\"login\":\"" + USER1 + "\",\"password\":\"" + PASSWORD1 + "\"}";
 
         mockMvc.perform(post("/users/login")
                 .header("Content-Type", "application/json")
@@ -34,7 +34,7 @@ public class LoginTest extends AbstractTest {
     @Test
     public void shouldReturnFalseOnBadCredentials() throws Exception {
 
-        String content1 = "{\"login\":\""+USER1+"\",\"password\":\"ashdashdsad\"}";
+        String content1 = "{\"login\":\"" + USER1 + "\",\"password\":\"ashdashdsad\"}";
 
         mockMvc.perform(post("/users/login")
                 .header("Content-Type", "application/json")
@@ -42,6 +42,19 @@ public class LoginTest extends AbstractTest {
                 .andExpect(
                         status().isOk())
                 .andExpect(jsonPath("$.value").value(false));
+    }
+
+    @Test
+    public void shouldReturnErrorIfLoginNotExist() throws Exception {
+
+        String content1 = "{\"login\":\"noSuchUser\",\"password\":\"noSuchPassword\"}";
+
+        mockMvc.perform(post("/users/login")
+                .header("Content-Type", "application/json")
+                .content(content1))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No user with that login"));
     }
 
 }

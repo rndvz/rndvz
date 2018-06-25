@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.edu.agh.rndvz.model.User;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +32,21 @@ public class ChatTests extends AbstractTest {
                 .content(content1))
                 .andExpect(
                         status().isOk());
+    }
+
+    @Test
+    public void shouldReturnErrorIfChatNotExist() throws Exception {
+
+        User user1 = userRepository.findUserByLogin(USER1).get();
+        User user2 = userRepository.findUserByLogin(USER2).get();
+        String content1 = "{\"from\":" + user1.getId() + ",\"to\":" + user2.getId() + "}";
+
+        mockMvc.perform(get("/chats")
+                .header("Content-Type", "application/json")
+                .content(content1))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No chat found for given users ids"));
     }
 
 }

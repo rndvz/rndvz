@@ -86,7 +86,6 @@ public class UserRelationTests {
 
     }
 
-
     private User createAndGet(String login) throws Exception {
         mockMvc.perform(post("/users").content(
                 "{\"login\": \"" + login + "\"}")).andExpect(
@@ -100,6 +99,32 @@ public class UserRelationTests {
         ObjectMapper mapper = new ObjectMapper();
 
         return mapper.readValue(jsonString, User.class);
+    }
+
+    @Test
+    public void shouldReturnErrorOnAcceptWhenUserNotExist() throws Exception {
+        String content = "{\"from\":12345,\"to\":543221}";
+
+        mockMvc.perform(post("/accept")
+                .header("Content-Type", "application/json")
+                .content(content))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No user with given id"));
+
+    }
+
+    @Test
+    public void shouldReturnErrorOnBlockWhenUserNotExist() throws Exception {
+        String content = "{\"from\":12345,\"to\":543221}";
+
+        mockMvc.perform(post("/block")
+                .header("Content-Type", "application/json")
+                .content(content))
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No user with given id"));
+
     }
 
 
