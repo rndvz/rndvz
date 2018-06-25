@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.rndvz.model.Chat;
 import pl.edu.agh.rndvz.model.TextMessage;
 import pl.edu.agh.rndvz.model.User;
+import pl.edu.agh.rndvz.model.jsonMappings.Relation;
 import pl.edu.agh.rndvz.model.jsonMappings.UserMessage;
 import pl.edu.agh.rndvz.persistence.ChatRepository;
 import pl.edu.agh.rndvz.persistence.MessageRepository;
@@ -47,6 +48,23 @@ public class MessageController {
     public ResponseEntity getMessageFrom(@PathVariable Long messageID) {
 
         return toMessageListResponse(messageID);
+    }
+
+    /**
+     * @param message is derived from json like
+     *                '{  "from":78,"to":54} }'
+     * @return MessageList Object as JSON. Messages are sorted.
+     * First message in list is the oldest, last message in list is the newest.
+     */
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/messages/search/last", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity getLastMessages(@RequestBody Relation message) {
+
+        Optional<Chat> optionalChat = chatRepository.findByUsers(message.getFrom(), message.getTo());
+
+        return optionalChat
+                .map(chat -> toMessageListResponse(chat.getLastMessage().getId()))
+                .orElseGet(Utils::noChatFound);
     }
 
 
