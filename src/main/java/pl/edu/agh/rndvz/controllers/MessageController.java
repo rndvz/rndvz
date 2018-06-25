@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class MessageController {
 
     private final UserRepository userRepository;
@@ -63,6 +64,7 @@ public class MessageController {
         Optional<Chat> optionalChat = chatRepository.findByUsers(message.getFrom(), message.getTo());
 
         return optionalChat
+                .flatMap(chat -> chatRepository.findById(chat.getId())) // czemu nie sciagał reszty pól?
                 .map(chat -> toMessageListResponse(chat.getLastMessage().getId()))
                 .orElseGet(Utils::noChatFound);
     }

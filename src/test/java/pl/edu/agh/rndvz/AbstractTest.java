@@ -20,6 +20,7 @@ public abstract class AbstractTest {
 
     protected static String USER1 = "l1";
     protected static String USER2 = "l2";
+    protected static String PASSWORD1 = "p1";
 
 
     @Autowired
@@ -33,6 +34,7 @@ public abstract class AbstractTest {
         userRepository.deleteAll();
         User user1 = new User();
         user1.setLogin(USER1);
+        user1.setPassword(PASSWORD1);
         User user2 = new User();
         user2.setLogin(USER2);
         userRepository.save(user1);

@@ -6,7 +6,6 @@ import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.ChatRepository;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class AcceptedController {
 
     private final UserRepository userRepository;

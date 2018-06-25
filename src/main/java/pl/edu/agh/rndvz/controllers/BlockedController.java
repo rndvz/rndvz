@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class BlockedController {
     private final UserRepository userRepository;
 

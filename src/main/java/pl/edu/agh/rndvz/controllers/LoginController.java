@@ -21,7 +21,7 @@ public class LoginController {
         this.userRepository = userRepository;
     }
 
-    @CrossOrigin(origins = "*:4200")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/users/login", consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity authenticate(@RequestBody Credentials credentials) {
         Optional<User> optionalUser = userRepository.findUserByLogin(credentials.getLogin());

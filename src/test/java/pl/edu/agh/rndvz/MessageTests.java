@@ -72,24 +72,7 @@ public class MessageTests extends AbstractTest {
 
         createMatch();
 
-        User user1 = userRepository.findUserByLogin(USER1).get();
-        User user2 = userRepository.findUserByLogin(USER2).get();
-
-        String content1 = "{\"text\":\"lalala\",\"from\":" + user1.getId() + ",\"to\":" + user2.getId() + "}";
-        MvcResult result = null;
-        for (int i = 0; i < 5; i++)
-            result = mockMvc.perform(post("/messages")
-                    .header("Content-Type", "application/json")
-                    .content(content1))
-                    .andExpect(
-                            status().isOk())
-                    .andReturn();
-
-        String jsonString = result.getResponse().getContentAsString();
-        System.out.println(jsonString);
-        ObjectMapper mapper = new ObjectMapper();
-
-        MessageList messageList = mapper.readValue(jsonString, MessageList.class);
+        MessageList messageList = createMessageListAndGet();
         int messageListSize = messageList.getMessages().size();
 
         TextMessage firstMessage = messageList.getMessages().get(0);
@@ -107,6 +90,52 @@ public class MessageTests extends AbstractTest {
                         status().isOk())
                 .andExpect(jsonPath("$.messages").isArray())
                 .andExpect(jsonPath("$.messages", hasSize(messageListSize)));
+    }
+
+
+    @Test
+    public void shouldGetLastMessages() throws Exception {
+
+        createMatch();
+
+        User user1 = userRepository.findUserByLogin(USER1).get();
+        User user2 = userRepository.findUserByLogin(USER2).get();
+
+
+        MessageList messageList = createMessageListAndGet();
+
+        int messageListSize = messageList.getMessages().size();
+        String content ="{\"from\":" + user1.getId() + ",\"to\":" + user2.getId() + "}";
+
+
+        mockMvc.perform(get("/messages/search/last")
+                .header("Content-Type", "application/json")
+                .content(content))
+                .andExpect(
+                        status().isOk())
+                .andExpect(jsonPath("$.messages").isArray())
+                .andExpect(jsonPath("$.messages", hasSize(messageListSize)));
+    }
+
+    private MessageList createMessageListAndGet() throws Exception {
+        User user1 = userRepository.findUserByLogin(USER1).get();
+        User user2 = userRepository.findUserByLogin(USER2).get();
+        String content1 = "{\"text\":\"lalala\",\"from\":" + user1.getId() + ",\"to\":" + user2.getId() + "}";
+        MvcResult result = null;
+        for (int i = 0; i < 5; i++)
+            result = mockMvc.perform(post("/messages")
+                    .header("Content-Type", "application/json")
+                    .content(content1))
+                    .andExpect(
+                            status().isOk())
+                    .andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        System.out.println(jsonString);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(jsonString, MessageList.class);
+
+
     }
 
 
