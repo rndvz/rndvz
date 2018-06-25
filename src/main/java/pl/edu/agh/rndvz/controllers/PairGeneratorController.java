@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import static pl.edu.agh.rndvz.controllers.Utils.toJsonUserList;
+
 @RestController
 public class PairGeneratorController {
     private final UserRepository userRepository;
@@ -47,7 +49,7 @@ public class PairGeneratorController {
             users = new LinkedList<>();
 
 
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(toJsonUserList(users));
     }
 
 }

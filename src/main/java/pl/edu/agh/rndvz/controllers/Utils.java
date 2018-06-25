@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pl.edu.agh.rndvz.model.TextMessage;
 import pl.edu.agh.rndvz.model.User;
-import pl.edu.agh.rndvz.model.jsonMappings.JsonBool;
-import pl.edu.agh.rndvz.model.jsonMappings.JsonID;
-import pl.edu.agh.rndvz.model.jsonMappings.JsonLogin;
-import pl.edu.agh.rndvz.model.jsonMappings.MessageList;
+import pl.edu.agh.rndvz.model.jsonMappings.*;
 
 import java.util.List;
 
@@ -50,6 +47,10 @@ public class Utils {
 
     public static MessageList toJson(List<TextMessage> messages) {
         return new MessageList(messages);
+    }
+
+    public static UserList toJsonUserList(List<User> users) {
+        return new UserList(users);
     }
 
 }
