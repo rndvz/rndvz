@@ -15,6 +15,8 @@ import pl.edu.agh.rndvz.model.jsonMappings.MessageList;
 import pl.edu.agh.rndvz.persistence.ChatRepository;
 import pl.edu.agh.rndvz.persistence.MessageRepository;
 
+import java.text.ParseException;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,10 +35,10 @@ public class MessageTests extends AbstractTest {
     ChatRepository chatRepository;
 
     @Before
-    public void deleteAllBeforeTests() {
+    public void initialize() throws Exception {
         messageRepository.deleteAll();
         chatRepository.deleteAll();
-        super.deleteAllBeforeTests();
+        super.initialize();
     }
 
     @Test

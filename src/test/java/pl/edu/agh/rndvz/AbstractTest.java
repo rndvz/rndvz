@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
+import java.text.SimpleDateFormat;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,11 +32,21 @@ public abstract class AbstractTest {
     protected UserRepository userRepository;
 
     @Before
-    public void deleteAllBeforeTests() {
+    public void initialize() throws Exception {
         userRepository.deleteAll();
         User user1 = new User();
         user1.setLogin(USER1);
         user1.setPassword(PASSWORD1);
+        user1.setAcceptedDistance(2);
+        user1.setAcceptedRateDifference(2);
+        user1.setAcceptedYearDifference(2);
+        user1.setAvgRate(5.0);
+        user1.setLatitude(15.0);
+        user1.setLongitude(15.0);
+        user1.setSex("male");
+        user1.setSexPreference("all");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        user1.setBirthDate(sdf.parse("2000-11-11"));
         User user2 = new User();
         user2.setLogin(USER2);
         userRepository.save(user1);
