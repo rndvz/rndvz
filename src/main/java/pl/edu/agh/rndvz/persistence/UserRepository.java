@@ -24,8 +24,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
             "    and  {2}-{3} < p.avgRate and {2}+{3} > p.avgRate\n" +
             "    and  (p.sexPreference ={4} or p.sexPreference = \"all\") \n" +
             "    and  ({5} = p.sex or {5} = \"all\" )\n" +
-            "    and  date({6}) -duration(\"P\"+{7}+\"Y\")   < date(p.birthDate)\n" +
-            "    and  date({6}) + duration(\"P\"+{7}+\"Y\")  > date(p.birthDate)\n" +
+//            "    and  date({6}) -duration(\"P\"+{7}+\"Y\")   < date(p.birthDate)\n" +
+//            "    and  date({6}) + duration(\"P\"+{7}+\"Y\")  > date(p.birthDate)\n" +
             "    and  sqrt((p.latitude -{8})^2 + (p.longitude -{9})^2) < {10}\n" +
             "    RETURN p LIMIT {1}")
     List<User> getPossiblePairs(Long userID,
