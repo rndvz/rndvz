@@ -1,6 +1,7 @@
 package pl.edu.agh.rndvz.controllers;
 
 import pl.edu.agh.rndvz.model.Chat;
+import pl.edu.agh.rndvz.model.jsonMappings.JsonMessage;
 import pl.edu.agh.rndvz.model.jsonMappings.Relation;
 import pl.edu.agh.rndvz.model.User;
 import pl.edu.agh.rndvz.persistence.ChatRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static pl.edu.agh.rndvz.controllers.Utils.noUserFoundforGivenID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -44,7 +46,7 @@ public class AcceptedController {
             return ResponseEntity.ok(Utils.toJson(isMatched));
 
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body("No user with given id");
+            return noUserFoundforGivenID();
         }
 
     }

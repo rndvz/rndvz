@@ -8,11 +8,6 @@ public class PhotoMessage {
     public PhotoMessage() {
     }
 
-    public PhotoMessage(String photo) {
-
-        this.photo = photo;
-    }
-
     public String getName() {
         return name;
     }

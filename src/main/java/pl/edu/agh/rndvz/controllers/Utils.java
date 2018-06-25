@@ -12,19 +12,19 @@ public class Utils {
     public static ResponseEntity noChatFound() {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("No chat found for given users ids");
+                .body(new JsonMessage("No chat found for given users ids"));
     }
 
-    public static ResponseEntity noPathFound() {
+    public static ResponseEntity noUserFoundforGivenID() {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("No messages found");
+                .body(new JsonMessage("No user with given id"));
     }
 
     public static ResponseEntity noUserFoundforGivenLogin() {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("No user with that login");
+                .body(new JsonMessage("No user with that login"));
     }
 
     public static ResponseEntity wrapWithResponseEntity(Object object) {

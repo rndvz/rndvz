@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static pl.edu.agh.rndvz.controllers.Utils.noUserFoundforGivenID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -43,7 +44,7 @@ public class BlockedController {
             return ResponseEntity.ok(startUser);
 
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
+            return noUserFoundforGivenID();
         }
     }
 

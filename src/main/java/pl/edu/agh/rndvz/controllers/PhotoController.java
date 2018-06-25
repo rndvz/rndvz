@@ -10,6 +10,8 @@ import pl.edu.agh.rndvz.model.jsonMappings.JsonMessage;
 import pl.edu.agh.rndvz.model.jsonMappings.PhotoMessage;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
+import static pl.edu.agh.rndvz.controllers.Utils.noUserFoundforGivenID;
+
 
 @RestController
 public class PhotoController {
@@ -31,7 +33,7 @@ public class PhotoController {
             userRepository.save(user);
             return ResponseEntity.ok(new JsonMessage("uploaded"));
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
+            return noUserFoundforGivenID();
         }
 
     }
