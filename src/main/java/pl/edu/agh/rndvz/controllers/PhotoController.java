@@ -1,10 +1,12 @@
 package pl.edu.agh.rndvz.controllers;
 
+import com.fasterxml.jackson.annotation.JsonMerge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.rndvz.model.*;
+import pl.edu.agh.rndvz.model.jsonMappings.JsonMessage;
 import pl.edu.agh.rndvz.model.jsonMappings.PhotoMessage;
 import pl.edu.agh.rndvz.persistence.UserRepository;
 
@@ -27,7 +29,7 @@ public class PhotoController {
             Photo photo = new Photo(photoMessage.getName(), photoMessage.getPhoto());
             user.getPhotos().add(photo);
             userRepository.save(user);
-            return ResponseEntity.ok("uploaded");
+            return ResponseEntity.ok(new JsonMessage("uploaded"));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with given id");
         }
